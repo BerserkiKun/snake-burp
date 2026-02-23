@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+             https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.snakeburp</groupId>
+    <artifactId>snake-burp-extension</artifactId>
+    <version>1.0.0</version>
+    <packaging>jar</packaging>
+
+    <name>Snake Burp Extension</name>
+    <description>Fully playable Snake game running inside a Burp Suite tab.</description>
+
+    <properties>
+        <java.version>21</java.version>
+        <maven.compiler.source>${java.version}</maven.compiler.source>
+        <maven.compiler.target>${java.version}</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <dependencies>
+        <!--
+            Burp Suite API JAR.
+
+            PortSwigger does not publish the Burp API to Maven Central.
+            You must obtain burp-extender-api.jar from one of:
+              1. Your local Burp Suite installation
+                 (File > Project Options > Sessions in older, or see Help > About)
+              2. The community-maintained GitHub mirror:
+                 https://github.com/PortSwigger/burp-extender-api
+              3. The burpsuite_community.jar itself (add to local repo)
+
+            Install locally before building:
+
+            mvn install:install-file \
+              -Dfile=/path/to/burp-extender-api.jar \
+              -DgroupId=net.portswigger.burp.extender \
+              -DartifactId=burp-extender-api \
+              -Dversion=2.1 \
+              -Dpackaging=jar
+        -->
+        <dependency>
+            <groupId>net.portswigger.burp.extender</groupId>
+            <artifactId>burp-extender-api</artifactId>
+            <version>2.1</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <!-- Standard compiler plugin -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.13.0</version>
+                <configuration>
+                    <release>${java.version}</release>
+                </configuration>
+            </plugin>
+
+            <!--
+                Fat JAR (uber-jar) via maven-shade-plugin.
+                Burp loads a single JAR; all classes must be bundled.
+                The Burp API itself is "provided" and must NOT be shaded in.
+            -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.6.0</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <createDependencyReducedPom>false</createDependencyReducedPom>
+                            <filters>
+                                <filter>
+                                    <!-- Exclude Burp API from the shaded JAR -->
+                                    <artifact>net.portswigger.burp.extender:burp-extender-api</artifact>
+                                    <excludes>
+                                        <exclude>**</exclude>
+                                    </excludes>
+                                </filter>
+                                <filter>
+                                    <!-- Remove signature files that break JAR loading -->
+                                    <artifact>*:*</artifact>
+                                    <excludes>
+                                        <exclude>META-INF/*.SF</exclude>
+                                        <exclude>META-INF/*.DSA</exclude>
+                                        <exclude>META-INF/*.RSA</exclude>
+                                    </excludes>
+                                </filter>
+                            </filters>
+                            <shadedArtifactAttached>false</shadedArtifactAttached>
+                            <transformers>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                    <manifestEntries>
+                                        <Main-Class>com.snakeburp.BurpExtender</Main-Class>
+                                        <Extension-Name>Snake 🐍</Extension-Name>
+                                    </manifestEntries>
+                                </transformer>
+                            </transformers>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>
