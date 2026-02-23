@@ -7,10 +7,12 @@
 - [🎯 Overview](#-overview)
 - [✨ Features](#-features)
 - [🎯 Why?](#-why)
+- [📁 Project Structure](#-project-structure)
 - [🚀 Installation](#-installation)
 - [🎮 How to Play](#-how-to-play)
 - [🏗️ Architecture](#️-architecture)
 - [📊 Technical Specifications](#-technical-specifications)
+- [Screenshots](#screenshots)
 - [Support Development](#support-development)
 
 ## 🎯 Overview
@@ -30,6 +32,29 @@
 ## 🎯 Why?
 
 Because even security researchers need a break sometimes! Plus, it demonstrates how to build a complete, interactive game as a Burp extension with proper separation of concerns, event handling, and UI rendering.
+
+## 📁 Project Structure
+
+```
+snake-burp/
+├── pom.xml
+└── burp/
+    ├── BurpExtender.java                  ← Burp entry point (IBurpExtender)
+    ├── engine/
+    │   └── GameEngine.java                ← Pure game logic, no Swing
+    ├── input/
+    │   └── InputHandler.java              ← KeyAdapter → game commands
+    ├── model/
+    │   ├── Difficulty.java                ← Enum: EASY / MEDIUM / HARD
+    │   ├── Direction.java                 ← Enum: UP / DOWN / LEFT / RIGHT
+    │   ├── Food.java                      ← Food placement logic
+    │   ├── GameState.java                 ← Enum: WAITING / RUNNING / PAUSED / GAME_OVER
+    │   ├── Point.java                     ← Immutable grid coordinate
+    │   └── Snake.java                     ← Snake body (deque) + movement
+    └── ui/
+        ├── SnakeGamePanel.java            ← Rendering (Graphics2D, paintComponent)
+        └── SnakeTab.java                  ← ITab, Timer, top bar controls
+```
 
 ## 🚀 Installation
 
@@ -131,6 +156,11 @@ InputHandler (Key Events)
 | Speed Progression | +1 level every 5 food items, -10ms interval |
 | Minimum Speed | 40ms (capped) |
 | Difficulty Levels | Easy (200ms), Medium (130ms), Hard (75ms) |
+
+## Screenshots
+<img width="1470" height="923" alt="Screenshot 2026-02-23 at 9 14 36ΓÇ»AM" src="https://github.com/user-attachments/assets/200a7cc2-51c8-4377-b67f-98cf12f2856c" />
+<img width="1470" height="901" alt="Screenshot 2026-02-23 at 9 16 46ΓÇ»AM" src="https://github.com/user-attachments/assets/aab23932-d373-4126-919f-d165690a0e92" />
+
 
 ## Support Development
 
