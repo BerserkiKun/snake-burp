@@ -158,8 +158,9 @@ InputHandler (Key Events)
 | Difficulty Levels | Easy (200ms), Medium (130ms), Hard (75ms) |
 
 ## Screenshots
-<img width="1470" height="923" alt="Screenshot 2026-02-23 at 9 14 36ΓÇ»AM" src="https://github.com/user-attachments/assets/200a7cc2-51c8-4377-b67f-98cf12f2856c" />
-<img width="1470" height="901" alt="Screenshot 2026-02-23 at 9 16 46ΓÇ»AM" src="https://github.com/user-attachments/assets/aab23932-d373-4126-919f-d165690a0e92" />
+| | | 
+|:---:|:---:|
+| <img width="1470" height="923" alt="Screenshot 2026-02-23 at 9 14 36ΓÇ»AM" src="https://github.com/user-attachments/assets/200a7cc2-51c8-4377-b67f-98cf12f2856c" /> | <img width="1470" height="901" alt="Screenshot 2026-02-23 at 9 16 46ΓÇ»AM" src="https://github.com/user-attachments/assets/aab23932-d373-4126-919f-d165690a0e92" /> |
 
 
 ## Support Development
